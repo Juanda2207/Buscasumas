@@ -1,0 +1,5 @@
+module:com.pdp.gr02.buscasumas
+com.pdp.gr02.buscasumas
+com.pdp.gr02.buscasumas.controllers
+com.pdp.gr02.buscasumas.models
+com.pdp.gr02.buscasumas.views
