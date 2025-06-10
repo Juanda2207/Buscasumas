@@ -11,13 +11,36 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+/**
+ * Clase que representa la vista principal de la aplicación.
+ * Se encarga de mostrar el estado del juego y de interactuar con el usuario.
+ */
 public class MainAppView {
 
+    /**
+     * Modelo del tablero de juego.
+     * Este modelo contiene la información sobre el estado del juego, como las minas y los botones.
+     */
     private Board board;
+    /**
+     * Controlador de la aplicación.
+     * Este controlador se encarga de manejar la lógica del juego y las interacciones del usuario.
+     */
     private MainAppController controller;
 
+    /**
+     * Contenedor principal de la vista.
+     * Este contenedor se utiliza para organizar los elementos de la interfaz gráfica.
+     */
     private final BorderPane root = new BorderPane();
 
+    /**
+     * Constructor de la vista principal.
+     * Inicializa el modelo del tablero y el controlador, y dibuja la vista.
+     *
+     * @param board El modelo del tablero de juego.
+     * @param controller El controlador de la aplicación.
+     */
     public MainAppView(Board board, MainAppController controller){
         this.board = board;
         this.controller = controller;
@@ -31,6 +54,13 @@ public class MainAppView {
         root.setCenter(CreateBoard(this.board.GetRows(), this.board.GetColumns()));
     }
 
+    /**
+     * Crea el menú superior de la interfaz.
+     * Este menú muestra información como el total de minas, un botón de carita feliz y un temporizador.
+     *
+     * @param totalMines El número total de minas en el juego.
+     * @return Un GridPane que contiene el menú superior.
+     */
     private GridPane CreateTopMenu(int totalMines){
 
         GridPane topContainer = new GridPane();
@@ -53,7 +83,13 @@ public class MainAppView {
         return topContainer;
     }
 
-    /** Crea el tablero dependiendo del modelo proporcionado */
+    /**
+     * Crea el tablero de juego dependiendo del modelo proporcionado
+     *
+     * @param rows El número de filas del tablero.
+     * @param cols El número de columnas del tablero.
+     * @return Un GridPane que representa el tablero de juego.
+     */
     private GridPane CreateBoard(int rows, int cols) {
 
         GridPane boardGrid = new GridPane();
@@ -73,7 +109,12 @@ public class MainAppView {
         return boardGrid;
     }
 
-    /** Para que MainApp lo añada a la Scene */
+    /**
+     * Obtiene el contenedor raíz de la vista.
+     * Este método es utilizado por la aplicación principal para agregar la vista a la escena.
+     *
+     * @return El contenedor raíz de la vista.
+     */
     public Parent getRoot() {
         return root;
     }
