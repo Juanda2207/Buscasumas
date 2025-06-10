@@ -13,8 +13,19 @@ import java.io.IOException;
 
 public class MainApp extends Application {
 
+    /**
+     * Nombre de la aplicación.
+     * Este nombre se muestra en la ventana principal del juego.
+     */
     private final String _app_name = "Buscasumas";
 
+    /**
+     * Método que se ejecuta al iniciar la aplicación.
+     * Aquí se configura la ventana principal y se inicia el juego.
+     *
+     * @param stage La ventana principal de la aplicación.
+     * @throws IOException Si ocurre un error al cargar los recursos necesarios.
+     */ 
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -34,7 +45,14 @@ public class MainApp extends Application {
         stage.show();
     }
 
+    /**
+     * Método principal que inicia la aplicación.
+     * Este método es el punto de entrada de la aplicación JavaFX.
+     *
+     * @param args Argumentos de línea de comandos (no se utilizan en este caso).
+     */
     public static void main(String[] args) {
+        /* Se lanza la aplicación de JavaFX */
         launch();
     }
 }
