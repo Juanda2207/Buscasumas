@@ -1,14 +1,26 @@
-package com.pdp.gr02.buscasumas;
+package com.pdp.gr02.buscasumas.controllers;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import com.pdp.gr02.buscasumas.models.Board;
+import com.pdp.gr02.buscasumas.models.Cell;
+import javafx.scene.control.Button;
 
 public class MainAppController {
-    @FXML
-    private Label welcomeText;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private Board board;
+
+    public MainAppController(Board board){
+        this.board = board;
+    }
+
+    /* Cuando el usuario hace clic derecho para revelar una mina */
+    public void HandleLeftClick(int i, int j, Button btn){
+
+        Cell cell = board.GetCell(i, j);
+
+        if(cell.HasMine()){
+            btn.setText("B");
+        }else{
+            btn.setText(String.valueOf(cell.GetAdjacentMines()));
+        }
     }
 }
