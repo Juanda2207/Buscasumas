@@ -4,8 +4,6 @@ import com.pdp.gr02.buscasumas.controllers.MainAppController;
 import com.pdp.gr02.buscasumas.models.Board;
 import com.pdp.gr02.buscasumas.views.MainAppView;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
