@@ -19,7 +19,7 @@ public class MainAppController {
 
         if(cell.HasMine()){
             btn.setText("B");
-        }else{
+        } else {
             btn.setText(String.valueOf(cell.GetAdjacentMines()));
         }
     }
