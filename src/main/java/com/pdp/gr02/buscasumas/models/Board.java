@@ -18,10 +18,11 @@ public class Board {
     private int rows, cols, totalMines; // Número total de filas, columnas y minas en el tablero
 
     /**
-     * Crea el tablero de juego inicializando las celdas y colocando minas aleatoriamente.
+     * Crea el tablero de juego inicializando las celdas y colocando minas
+     * aleatoriamente.
      * También calcula el número de minas adyacentes para cada celda.
      */
-    private void CreateBoard(){
+    private void CreateBoard() {
 
         /* Se agregan todas celdas sin minas */
         for (int i = 0; i < rows; i++) {
@@ -39,7 +40,7 @@ public class Board {
 
             boolean hasMine = cells[r][c].HasMine();
 
-            if(!hasMine){
+            if (!hasMine) {
                 cells[r][c].SetMine(true);
                 placed++;
             }
@@ -68,14 +69,43 @@ public class Board {
     }
 
     /**
+     * Verifica si el jugador ha ganado el juego.
+     * El jugador ha ganado si todas las minas están marcadas con una bandera
+     * 
+     * @return boolean
+     */
+    public boolean HasPlayerWon() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Cell cell = cells[i][j];
+                // Si hay una mina y no está marcada, el jugador no ha ganado
+                if (cell.HasMine() && !cell.IsFlagged()) {
+                    return false;
+                }
+                // Si no hay mina y está oculta, el jugador no ha ganado
+                if (!cell.HasMine() && cell.IsHidden()) {
+                    return false;
+                }
+            }
+        }
+        return true; // El jugador ha ganado si todas las minas están marcadas y todas las celdas sin
+                     // minas están reveladas
+    }
+
+    public void Reset() {
+        this.cells = new Cell[rows][cols];
+        CreateBoard();
+    }
+
+    /**
      * Constructor de la clase Board.
      * Inicializa el tablero con el número de filas, columnas y minas especificadas.
      *
-     * @param rows Número de filas del tablero.
-     * @param cols Número de columnas del tablero.
+     * @param rows       Número de filas del tablero.
+     * @param cols       Número de columnas del tablero.
      * @param totalMines Número total de minas en el tablero.
      */
-    public Board(int rows, int cols, int totalMines){
+    public Board(int rows, int cols, int totalMines) {
         this.rows = rows;
         this.cols = cols;
         this.totalMines = totalMines;
@@ -92,7 +122,7 @@ public class Board {
      * @param j La columna de la celda.
      * @return La celda en la posición (i, j).
      */
-    public Cell GetCell(int i, int j){
+    public Cell GetCell(int i, int j) {
         return cells[i][j];
     }
 
@@ -103,7 +133,7 @@ public class Board {
      * @param j La columna de la celda.
      * @return La celda en la posición (i, j).
      */
-    public int GetRows(){
+    public int GetRows() {
         return this.rows;
     }
 
@@ -112,7 +142,7 @@ public class Board {
      *
      * @return El número de columnas del tablero.
      */
-    public int GetColumns(){
+    public int GetColumns() {
         return this.cols;
     }
 
@@ -121,7 +151,7 @@ public class Board {
      *
      * @return El número total de minas en el tablero.
      */
-    public int GetTotalMines(){
+    public int GetTotalMines() {
         return this.totalMines;
     }
 }
