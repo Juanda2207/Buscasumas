@@ -2,6 +2,12 @@
 
 Buscasumas es un juego de lógica inspirado en el clásico Buscaminas, desarrollado en Java utilizando JavaFX.
 
+## Integrantes
+
+- Brayan Stivel Bernal Garcia
+- Christian Alejandro Baez Muñoz
+- Juan David Bonilla Alvarez
+
 ## ¿Cómo arrancar el proyecto?
 
 1. **Abre el proyecto en IntelliJ IDEA**:
@@ -13,6 +19,20 @@ Buscasumas es un juego de lógica inspirado en el clásico Buscaminas, desarroll
    - Haz clic derecho sobre la clase y selecciona `Run 'MainApp.main()'`.
 
 ¡Listo! La aplicación debería abrirse y mostrar la interfaz del juego.
+
+## ¿Cómo ejecutar las pruebas unitarias?
+
+1. **Abre el proyecto en IntelliJ IDEA**:
+   - Selecciona `File > Open...` y elige la carpeta raíz del proyecto.
+   - IntelliJ IDEA detectará automáticamente el proyecto Maven y descargará las dependencias necesarias.
+
+2. **Ejecuta las pruebas**:
+   - Busca las clases que quieras probar, en este caso los models que se encuentran en tests. Por ejemplo:
+      - [`com.pdp.gr02.buscasumas.models.BoardTest.java`](src/test/java/com/pdp/gr02/buscasumas/models/BoardTest.java/).
+      - [`com.pdp.gr02.buscasumas.models.CellTest.java`](src/test/java/com/pdp/gr02/buscasumas/models/CellTest.java/).
+   - Selecciona el método que contiene la prueba unitaria que quieras ejecutar, y haz clic en ejecutar test.
+
+¡Listo! Las pruebas unitarias deben ejecutarse según lo esperado.
 
 ## Demostración
 
@@ -29,6 +49,3 @@ A continuación se muestran algunas capturas de pantalla de la aplicación en fu
 ### Juego terminado
 
 ![Juego terminado](/src/main/resources/images/docs/image3.png)
-
----
-
