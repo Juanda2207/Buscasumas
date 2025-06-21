@@ -5,6 +5,7 @@ import com.pdp.gr02.buscasumas.models.Board;
 import com.pdp.gr02.buscasumas.views.MainAppView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class MainApp extends Application {
      *
      * @param stage La ventana principal de la aplicación.
      * @throws IOException Si ocurre un error al cargar los recursos necesarios.
-     */ 
+     */
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -38,7 +39,14 @@ public class MainApp extends Application {
 
         /* Se agrega la escena principal del juego */
         Scene scene = new Scene(view.getRoot());
+        scene.getStylesheets().add(getClass().getResource("/com/pdp/gr02/buscasumas/css/style.css").toExternalForm());
+
+        Image icon = new Image(getClass().getResourceAsStream("/com/pdp/gr02/buscasumas/assets/icon.png"));
+        stage.getIcons().add(icon);
+
         stage.setTitle(_app_name);
+        stage.setResizable(false);
+        stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
     }

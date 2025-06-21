@@ -25,6 +25,6 @@ public class Music {
      * @param soundFile El archivo de sonido a reproducir.
      */
     public void playSoundEffect(String soundFile) {
-        // TODO: Lógica para reproducir un efecto de sonido 
+        // Lógica para reproducir un efecto de sonido 
     }
 }
