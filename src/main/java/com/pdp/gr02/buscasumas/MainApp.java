@@ -30,13 +30,13 @@ public class MainApp extends Application {
 
         /* Se crea el modelo base */
         Board board = new Board(10, 10, 8);
-
+        int time = 30;
         /* Se crea el controlador a partir del modelo base */
-        MainAppController controller = new MainAppController(board);
+        MainAppController controller = new MainAppController(board, time);
 
         /* Se crea la vista a partir del modelo y el controlador */
         MainAppView view = new MainAppView(board, controller);
-
+        controller.StartCountdown(view.getTimerLabel());
         /* Se agrega la escena principal del juego */
         Scene scene = new Scene(view.getRoot());
         scene.getStylesheets().add(getClass().getResource("/com/pdp/gr02/buscasumas/css/style.css").toExternalForm());

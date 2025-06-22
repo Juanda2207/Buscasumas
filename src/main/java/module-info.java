@@ -1,7 +1,7 @@
 module com.pdp.gr02.buscasumas {
     requires transitive javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
+    requires javafx.media;
 
     opens com.pdp.gr02.buscasumas to javafx.fxml;
     exports com.pdp.gr02.buscasumas;

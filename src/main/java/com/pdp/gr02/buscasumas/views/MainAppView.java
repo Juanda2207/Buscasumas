@@ -28,6 +28,7 @@ public class MainAppView {
      * y los botones.
      */
     private Board board;
+    private Label timerLabel;
 
     private Button[][] buttons;
 
@@ -57,6 +58,10 @@ public class MainAppView {
         this.controller = controller;
 
         DrawView();
+    }
+
+    public Label getTimerLabel() {
+        return timerLabel;
     }
 
     /* Pinta los contenedores principales de la interfaz */
@@ -124,7 +129,7 @@ public class MainAppView {
 
         // Sección 3: Temporizador
 
-        Label timerLabel = new Label("10:00");
+        timerLabel = new Label("10:00");
         timerLabel.setStyle("-fx-font-weight: bold;");
 
         topContainer.add(timerLabel, 2, 0);

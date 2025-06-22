@@ -1,30 +1,74 @@
 package com.pdp.gr02.buscasumas.models;
 
+import javafx.scene.media.AudioClip;
+
 /**
- * Clase que contendra los métodos para la reproducción de música en la aplicación Buscasumas.
+ * Clase que contiene los métodos para la reproducción de música y efectos en la aplicación Buscasumas.
  */
 public class Music {
 
-    /**
-     * Reproduce la música de fondo.
-     */
+    private final AudioClip successSound;
+    private final AudioClip errorSound;
+    private final AudioClip backgroundMusic;
+    private final AudioClip alertSound;
+    private final AudioClip lackOfTimeMusic;
+
+    public Music() {
+        successSound = loadClip("/com/pdp/gr02/buscasumas/assets/music/success.mp3");
+        errorSound = loadClip("/com/pdp/gr02/buscasumas/assets/music/error.wav");
+        backgroundMusic = loadClip("/com/pdp/gr02/buscasumas/assets/music/background.mp3");
+        alertSound = loadClip("/com/pdp/gr02/buscasumas/assets/music/alert.wav");
+        lackOfTimeMusic = loadClip("/com/pdp/gr02/buscasumas/assets/music/lackOfTime.wav");
+    }
+
+    private AudioClip loadClip(String path) {
+        try {
+            return new AudioClip(getClass().getResource(path).toExternalForm());
+        } catch (Exception e) {
+            System.err.println("Error al cargar el archivo de sonido: " + path);
+            return null;
+        }
+    }
+
+    // Música de fondo
     public void playBackgroundMusic() {
-        // Lógica para reproducir música de fondo
+        if (backgroundMusic != null) {
+            backgroundMusic.setCycleCount(AudioClip.INDEFINITE); // bucle infinito
+            backgroundMusic.play();
+        }
     }
 
-    /**
-     * Detiene la música de fondo.
-     */
     public void stopBackgroundMusic() {
-        // Lógica para detener la música de fondo
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
     }
 
-    /**
-     * Reproduce un efecto de sonido.
-     *
-     * @param soundFile El archivo de sonido a reproducir.
-     */
-    public void playSoundEffect(String soundFile) {
-        // Lógica para reproducir un efecto de sonido 
+    // Sonido de éxito
+    public void playSuccessSound() {
+        if (successSound != null) {
+            successSound.play();
+        }
+    }
+
+    // Sonido de error
+    public void playErrorSound() {
+        if (errorSound != null) {
+            errorSound.play();
+        }
+    }
+
+    // Sonido de alerta
+    public void playAlertSound() {
+        if (alertSound != null) {
+            alertSound.play();
+        }
+    }
+
+    // Sonido de missingTime
+    public void playMissingTimeSound() {
+        if (lackOfTimeMusic != null) {
+            lackOfTimeMusic.play();
+        }
     }
 }
