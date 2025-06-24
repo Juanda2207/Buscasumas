@@ -2,13 +2,18 @@ package com.pdp.gr02.buscasumas.controllers;
 
 import com.pdp.gr02.buscasumas.models.Board;
 import com.pdp.gr02.buscasumas.models.Cell;
+import com.pdp.gr02.buscasumas.models.Music;
 import com.pdp.gr02.buscasumas.utils.ImageAssets;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 /**
  * Clase que representa el controlador principal de la aplicación.
  * Se encarga de manejar las interacciones del usuario con el tablero de juego.
@@ -20,8 +25,13 @@ public class MainAppController {
      * y los botones.
      */
     private Board board;
-
+    private Music music;
     private Button[][] buttons;
+
+    private Timeline timer;
+    private int secondsRemaining;
+    private Label timerLabel;
+    private int time;
 
     /**
      * Constructor del controlador principal.
@@ -29,8 +39,11 @@ public class MainAppController {
      *
      * @param board El modelo del tablero de juego.
      */
-    public MainAppController(Board board) {
+    public MainAppController(Board board, int initialSeconds) {
         this.board = board;
+        this.music = new Music();
+        this.music.playBackgroundMusic();
+        this.time = initialSeconds;
     }
 
     /**
@@ -38,6 +51,59 @@ public class MainAppController {
      */
     public Button[][] GetButtons() {
         return buttons;
+    }
+
+    private String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private void ShowTimeOverMessage() {
+        music.stopBackgroundMusic();
+        music.playErrorSound();
+
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Tiempo agotado");
+            alert.setHeaderText(null);
+            alert.setContentText("Se acabó el tiempo. ¡Intenta de nuevo!");
+            alert.showAndWait();
+        });
+    }
+
+    public void StartCountdown(Label label) {
+        this.timerLabel = label;
+        this.secondsRemaining = this.time;
+
+        if (timer != null) timer.stop();
+
+        timerLabel.setText(formatTime(secondsRemaining));
+
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            secondsRemaining--;
+
+            timerLabel.setText(formatTime(secondsRemaining));
+
+            if (secondsRemaining == 20) {
+                music.stopBackgroundMusic();
+                music.playMissingTimeSound();
+            }
+
+            if (secondsRemaining <= 0) {
+                timer.stop();
+                ShowTimeOverMessage();
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
+    }
+
+
+    public void StopTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
     }
 
     /**
@@ -48,6 +114,9 @@ public class MainAppController {
     }
 
     private void ShowVictoryMessage() {
+        this.music.stopBackgroundMusic();
+        StopTimer();
+        this.music.playSuccessSound();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("¡Felicidades!");
         alert.setHeaderText(null);
@@ -56,6 +125,9 @@ public class MainAppController {
     }
 
     private void ShowGameOverMessage() {
+        this.music.stopBackgroundMusic();
+        StopTimer();
+        this.music.playErrorSound();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Juego terminado");
         alert.setHeaderText(null);
@@ -160,6 +232,9 @@ public class MainAppController {
      */
     private void HandleMineClick(int i, int j) {
 
+        // TODO: Condicionar con el modal con el desafio
+        this.music.playAlertSound();
+
         Cell cell = board.GetCell(i, j);
 
         if (!cell.IsHidden() || cell.IsFlagged())
@@ -248,9 +323,12 @@ public class MainAppController {
         CheckWinCondition();
     }
 
+
     public void ResetGame() {
 
         board.Reset();
+        this.music.playBackgroundMusic();
+        StartCountdown(timerLabel);
 
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
