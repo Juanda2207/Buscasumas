@@ -59,6 +59,6 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         /* Se lanza la aplicación de JavaFX */
-        launch();
+        launch(args);
     }
 }
