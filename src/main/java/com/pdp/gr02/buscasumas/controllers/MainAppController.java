@@ -1,5 +1,8 @@
 package com.pdp.gr02.buscasumas.controllers;
 
+import java.util.Optional;
+import java.util.Random;
+
 import com.pdp.gr02.buscasumas.models.Board;
 import com.pdp.gr02.buscasumas.models.Cell;
 import com.pdp.gr02.buscasumas.models.Music;
@@ -9,11 +12,13 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
 /**
  * Clase que representa el controlador principal de la aplicación.
  * Se encarga de manejar las interacciones del usuario con el tablero de juego.
@@ -76,7 +81,8 @@ public class MainAppController {
         this.timerLabel = label;
         this.secondsRemaining = this.time;
 
-        if (timer != null) timer.stop();
+        if (timer != null)
+            timer.stop();
 
         timerLabel.setText(formatTime(secondsRemaining));
 
@@ -98,7 +104,6 @@ public class MainAppController {
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
     }
-
 
     public void StopTimer() {
         if (timer != null) {
@@ -232,44 +237,76 @@ public class MainAppController {
      */
     private void HandleMineClick(int i, int j) {
 
-        // TODO: Condicionar con el modal con el desafio
-        this.music.playAlertSound();
+        Random rand = new Random();
+        int a = rand.nextInt(10) + 1;
+        int b = rand.nextInt(10) + 1;
+        int correctAnswer = a + b;
 
-        Cell cell = board.GetCell(i, j);
+        // Crear cuadro de diálogo
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("¡Mina encontrada!");
+        dialog.setHeaderText("¡Tienes una oportunidad de salvarte!");
+        dialog.setContentText("¿Cuánto es " + a + " + " + b + "?");
 
-        if (!cell.IsHidden() || cell.IsFlagged())
-            return;
+        Optional<String> result = dialog.showAndWait();
 
-        cell.SetHidden(false);
+        Boolean game_over = false;
 
-        Button btn = buttons[i][j];
-
-        Image img = ImageAssets.GetMineImage();
-
-        SetImageButton(btn, img);
-
-        btn.setDisable(true);
-
-        // Revelar todas las demás minas del tablero
-        for (int row = 0; row < board.GetRows(); row++) {
-            for (int col = 0; col < board.GetColumns(); col++) {
-
-                Cell otherCell = board.GetCell(row, col);
-
-                Button other_btn = buttons[row][col];
-
-                if (otherCell.HasMine() && otherCell.IsHidden()) {
-
-                    SetImageButton(other_btn, img);
-
-                    otherCell.SetHidden(false);
+        if (result.isPresent()) {
+            try {
+                int answer = Integer.parseInt(result.get());
+                if (answer == correctAnswer) {
+                    game_over = false;
+                    HandleRightClick(i, j);
+                } else {
+                    game_over = true;
                 }
-
-                other_btn.setDisable(true);
+            } catch (NumberFormatException e) {
+                game_over = true;
             }
+        } else {
+            game_over = true;
         }
 
-        ShowGameOverMessage();
+        if (game_over) {
+            this.music.playAlertSound();
+
+            Cell cell = board.GetCell(i, j);
+
+            if (!cell.IsHidden() || cell.IsFlagged())
+                return;
+
+            cell.SetHidden(false);
+
+            Button btn = buttons[i][j];
+
+            Image img = ImageAssets.GetMineImage();
+
+            SetImageButton(btn, img);
+
+            btn.setDisable(true);
+
+            // Revelar todas las demás minas del tablero
+            for (int row = 0; row < board.GetRows(); row++) {
+                for (int col = 0; col < board.GetColumns(); col++) {
+
+                    Cell otherCell = board.GetCell(row, col);
+
+                    Button other_btn = buttons[row][col];
+
+                    if (otherCell.HasMine() && otherCell.IsHidden()) {
+
+                        SetImageButton(other_btn, img);
+
+                        otherCell.SetHidden(false);
+                    }
+
+                    other_btn.setDisable(true);
+                }
+            }
+
+            ShowGameOverMessage();
+        }
     }
 
     /**
@@ -284,7 +321,7 @@ public class MainAppController {
 
         Cell cell = board.GetCell(i, j);
 
-        if (!cell.IsHidden())
+        if (!cell.IsHidden() || cell.IsFlagged())
             return;
 
         if (cell.HasMine()) {
@@ -322,7 +359,6 @@ public class MainAppController {
 
         CheckWinCondition();
     }
-
 
     public void ResetGame() {
 
